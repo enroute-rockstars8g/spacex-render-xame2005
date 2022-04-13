@@ -1,31 +1,29 @@
 import { Component } from "react";
-import logo from "./logo.svg";
+import { Modal } from "./components/Modal";
 import "./App.css";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      rockets: [],
+    };
+  }
+
   componentDidMount() {
     fetch("https://api.spacexdata.com/v4/rockets")
-      .then((res) => res.json())
-      .then((json) => console.log(json));
+      .then((response) => response.json())
+      .then((rockets) => this.setState({ rockets: rockets }));
   }
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container">
+        <div className="row">
+          {this.state.rockets.map((rocket) => (
+            <Modal rocket={rocket} />
+          ))}
+        </div>
       </div>
     );
   }
